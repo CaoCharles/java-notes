@@ -1,0 +1,10 @@
+[project]
+name = "java-docs"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "mkdocs-gemini-chatbot>=1.0.1",
+    "mkdocs-material>=9.7.0",
+]

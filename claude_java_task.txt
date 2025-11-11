@@ -1,0 +1,257 @@
+我要建立一個完整的 Java 學習文件系列,請幫我執行以下任務:
+
+【第一階段:建立目錄結構】
+在 docs/ 下建立目錄:
+- java/
+  - basics/
+  - oop/
+  - advanced/
+  - database/
+  - patterns/
+
+【第二階段:撰寫 17 篇 Java 學習文章】
+
+請依序建立以下文章,每篇文章都要包含:
+- 清晰的章節結構
+- 完整的程式碼範例(附註解)
+- 實際操作步驟
+- 重點提示(使用 admonition)
+- 常見問題與解答
+- 練習題或實作建議
+
+文章列表:
+
+1. docs/java/basics/01-java-overview.md
+   標題:Java 技術概論
+   內容:
+   - Java 歷史與特色
+   - JDK、JRE、JVM 差異
+   - Java 開發環境設定
+   - 第一個 Java 程式
+   - 編譯與執行流程
+
+2. docs/java/basics/02-data-types-operators.md
+   標題:基本資料型態、運算子與流程控制敘述
+   內容:
+   - 基本資料型態 (int, double, boolean, char)
+   - 變數宣告與命名規則
+   - 算術、比較、邏輯運算子
+   - if-else、switch 流程控制
+   - for、while、do-while 迴圈
+   - break、continue 使用
+
+3. docs/java/basics/03-string-date-number.md
+   標題:文字、日期、時間與數字物件
+   內容:
+   - String 類別與常用方法
+   - StringBuilder 與 StringBuffer
+   - LocalDate、LocalTime、LocalDateTime
+   - DateTimeFormatter 格式化
+   - Integer、Double 等包裝類別
+   - BigDecimal 精確運算
+
+4. docs/java/oop/04-class-and-object.md
+   標題:類別與物件
+   內容:
+   - 類別定義與物件建立
+   - 建構子(Constructor)
+   - 實例變數與方法
+   - this 關鍵字
+   - 存取修飾子(public, private, protected)
+   - static 靜態成員
+   - 封裝(Encapsulation)概念
+
+5. docs/java/oop/05-class-design-enum.md
+   標題:設計類別與列舉(enum)
+   內容:
+   - 類別設計原則
+   - 方法多載(Overloading)
+   - 列舉(enum)定義與使用
+   - enum 搭配 switch
+   - enum 進階功能(建構子、方法)
+
+6. docs/java/oop/06-inheritance-records.md
+   標題:實作繼承與使用紀錄
+   內容:
+   - 繼承(Inheritance)概念
+   - extends 關鍵字
+   - 方法覆寫(Overriding)
+   - super 關鍵字
+   - final 類別與方法
+   - Records (Java 14+)
+   - Records vs 傳統類別
+
+7. docs/java/oop/07-interface-generics.md
+   標題:介面與泛型(Generics)
+   內容:
+   - 介面(Interface)定義
+   - implements 實作介面
+   - 預設方法(default method)
+   - 多重繼承介面
+   - 泛型基礎語法 <T>
+   - 泛型類別與方法
+   - 泛型的優點與限制
+
+8. docs/java/basics/08-arrays-loops.md
+   標題:陣列與迴圈
+   內容:
+   - 一維陣列宣告與初始化
+   - 陣列走訪與操作
+   - 多維陣列
+   - Arrays 工具類別
+   - for-each 迴圈
+   - 陣列常見操作(排序、搜尋)
+
+9. docs/java/advanced/09-collections.md
+   標題:集合(Collections)
+   內容:
+   - Collection 框架介紹
+   - List (ArrayList, LinkedList)
+   - Set (HashSet, TreeSet)
+   - Map (HashMap, TreeMap)
+   - Queue 與 Deque
+   - Collections 工具類別
+   - 集合選擇與效能考量
+
+10. docs/java/advanced/10-nested-class-lambda.md
+    標題:巢狀類別與 Lambda 運算式
+    內容:
+    - 內部類別(Inner Class)
+    - 靜態巢狀類別
+    - 匿名類別(Anonymous Class)
+    - Lambda 表達式語法
+    - 函數式介面(Functional Interface)
+    - 方法參考(Method Reference)
+    - Lambda 實際應用
+
+11. docs/java/advanced/11-stream-api.md
+    標題:Java 8 串流 API
+    內容:
+    - Stream 概念與特性
+    - Stream 建立方式
+    - 中間操作(filter, map, sorted)
+    - 終端操作(collect, forEach, reduce)
+    - Collectors 收集器
+    - Optional 類別
+    - Stream 效能考量
+
+12. docs/java/advanced/12-exception-debug.md
+    標題:例外控制、記錄(Records)與除錯
+    內容:
+    - 例外(Exception)概念
+    - try-catch-finally
+    - throw 與 throws
+    - 自定義例外
+    - try-with-resources
+    - 除錯技巧與工具
+    - 日誌記錄最佳實踐
+
+13. docs/java/advanced/13-annotations.md
+    標題:標記(Annotations)
+    內容:
+    - Annotation 概念與用途
+    - 內建標記(@Override, @Deprecated)
+    - 自定義 Annotation
+    - 元註解(Meta-Annotations)
+    - Annotation 實際應用
+    - 反射(Reflection)與 Annotation
+
+14. docs/java/database/14-database-development.md
+    標題:開發資料庫應用程式
+    內容:
+    - JDBC 架構與流程
+    - 連接資料庫
+    - Statement 與 PreparedStatement
+    - ResultSet 處理查詢結果
+    - 交易(Transaction)管理
+    - 連線池(Connection Pool)
+    - JPA 與 Hibernate 簡介
+
+15. docs/java/advanced/15-security.md
+    標題:安全性
+    內容:
+    - Java 安全性概述
+    - 加密與解密基礎
+    - MessageDigest (MD5, SHA)
+    - Cipher 加密類別
+    - 密碼雜湊最佳實踐
+    - SSL/TLS 連線
+    - 常見安全漏洞防範
+
+16. docs/java/advanced/16-advanced-generics.md
+    標題:進階泛型(Generics)
+    內容:
+    - 泛型邊界(Bounded Type)
+    - 萬用字元(Wildcards)
+    - 上界與下界(? extends, ? super)
+    - 泛型方法進階
+    - 型別擦除(Type Erasure)
+    - 泛型陣列限制
+    - 實務應用案例
+
+17. docs/java/patterns/17-design-patterns-regex-io.md
+    標題:設計模式、常式運算式與 IO Watch 服務
+    內容:
+    - 常用設計模式(Singleton, Factory, Builder)
+    - 正規表達式(Regular Expression)
+    - Pattern 與 Matcher
+    - 檔案 I/O 操作
+    - NIO.2 新特性
+    - WatchService 監控檔案變化
+    - Path 與 Files 類別
+
+【第三階段:建立索引頁面】
+
+建立 docs/java/index.md 作為 Java 學習路徑的導覽頁,內容包含:
+- 學習路徑說明
+- 各章節簡介與連結
+- 學習建議順序
+- 推薦資源
+
+【第四階段:更新 mkdocs.yml】
+
+更新 mkdocs.yml 的 nav 設定如下:
+
+nav:
+  - 首頁: index.md
+  - Java 學習:
+      - 學習路徑: java/index.md
+      - 基礎篇:
+          - 01. Java 技術概論: java/basics/01-java-overview.md
+          - 02. 基本資料型態與流程控制: java/basics/02-data-types-operators.md
+          - 03. 文字、日期與數字物件: java/basics/03-string-date-number.md
+          - 08. 陣列與迴圈: java/basics/08-arrays-loops.md
+      - 物件導向:
+          - 04. 類別與物件: java/oop/04-class-and-object.md
+          - 05. 設計類別與列舉: java/oop/05-class-design-enum.md
+          - 06. 繼承與記錄: java/oop/06-inheritance-records.md
+          - 07. 介面與泛型: java/oop/07-interface-generics.md
+      - 進階主題:
+          - 09. 集合框架: java/advanced/09-collections.md
+          - 10. 巢狀類別與 Lambda: java/advanced/10-nested-class-lambda.md
+          - 11. Stream API: java/advanced/11-stream-api.md
+          - 12. 例外控制與除錯: java/advanced/12-exception-debug.md
+          - 13. 標記註解: java/advanced/13-annotations.md
+          - 15. 安全性: java/advanced/15-security.md
+          - 16. 進階泛型: java/advanced/16-advanced-generics.md
+      - 資料庫:
+          - 14. 資料庫應用開發: java/database/14-database-development.md
+      - 設計模式:
+          - 17. 設計模式與進階 IO: java/patterns/17-design-patterns-regex-io.md
+
+【撰寫規範】
+1. 全部使用繁體中文
+2. 程式碼範例要完整可執行,並加上中文註解
+3. 每個重要概念都要有實際範例
+4. 使用 admonition 標註:
+   - !!! note "提示" - 重要概念
+   - !!! tip "技巧" - 最佳實踐
+   - !!! warning "注意" - 常見陷阱
+   - !!! example "範例" - 程式碼範例
+5. 每篇文章結尾加入「重點整理」和「練習建議」
+
+【執行方式】
+請逐篇建立,每完成 3-4 篇文章後,執行一次 mkdocs serve 讓我確認。
+如果我說「繼續」,就繼續撰寫下一批文章。
+
+現在請開始建立第 1-4 篇文章。

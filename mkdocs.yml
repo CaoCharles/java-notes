@@ -1,0 +1,203 @@
+site_name: CaoCharles's 上課筆記
+site_url: https://caocharles.github.io/java-notes/  # 改成你的 GitHub Pages URL
+site_author: caocharles
+site_description: Java 學習筆記與技術文件
+
+# GitHub Repository 設定 (右上角連結)
+repo_name: caocharles/java-notes  # 改成你的 GitHub 使用者名稱/專案名稱
+repo_url: https://github.com/caocharles/java-notes  # 改成你的 GitHub 專案網址
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  language: zh-TW  # 設定介面語言為繁體中文
+  
+  font: 
+    text: Noto Sans Traditional Chinese
+    code: Consolas
+  
+  palette:
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: deep orange  # 主色調
+      accent: orange   # 強調色
+      toggle:
+        icon: material/brightness-7
+        name: 切換到深色模式
+
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: orange
+      accent: amber
+      toggle:
+        icon: material/brightness-4
+        name: 切換到淺色模式
+  
+  # Material 主題進階功能
+  features:
+    # === 頂部導航標籤功能 (重要!) ===
+    - navigation.tabs              # 啟用頂部導航標籤
+    - navigation.tabs.sticky       # 捲動時固定標籤在頂部
+    
+    # === 導航功能 ===
+    - navigation.sections          # 導航分區
+    - navigation.expand            # 預設展開所有導航項目
+    - navigation.top               # 顯示回到頂部按鈕
+    - navigation.footer            # 頁尾上下頁導航
+    - navigation.indexes           # 區段索引頁面
+    - navigation.path              # 顯示麵包屑導航
+    - navigation.tracking          # 網址追蹤錨點
+    
+    # === 目錄功能 ===
+    - toc.follow                   # 目錄自動跟隨
+    # - toc.integrate                # 目錄整合到導航面板
+    
+    # === 搜尋功能 (中英文) ===
+    - search.suggest               # 搜尋建議
+    - search.highlight             # 搜尋結果高亮顯示
+    - search.share                 # 分享搜尋連結
+    
+    # === 內容功能 ===
+    - content.code.copy            # 程式碼複製按鈕
+    - content.code.annotate        # 程式碼註解
+    - content.tabs.link            # 內容標籤連結
+    - content.tooltips             # 工具提示
+    - content.action.edit          # 編輯此頁按鈕
+    - content.action.view          # 檢視原始碼按鈕
+    
+    # === 標題功能 ===
+    - header.autohide              # 向下捲動時自動隱藏標題
+  
+  # 圖示設定
+  icon:
+    repo: fontawesome/brands/github      # GitHub 圖示
+    edit: material/pencil                # 編輯圖示
+    view: material/eye                   # 檢視圖示
+    logo: material/book-open-page-variant  # 網站 Logo
+
+# 外掛設定
+plugins:
+  # 中英文搜尋功能
+  - search:
+      separator: '[\s\u200b\-,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
+      lang:
+        - zh        # 中文
+        - en        # 英文
+  
+  # Gemini Chatbot
+  - gemini-chatbot:
+      model: "gemini-2.5-flash"
+      chat_title: "學習小幫手"
+      initial_prompt: "我是AI助理,有什麼想問的～"
+
+# 導航結構 (頂部會出現 Home, Getting Started, Java 學習三個標籤)
+nav:
+  - Home:
+      - 首頁: index.md
+  
+  - Getting Started:
+      - 入門指南: getting-started/index.md
+      - 環境設定: getting-started/setup.md
+      - 快速開始: getting-started/quickstart.md
+  
+  - Java Tutorial:
+      - 學習路徑: java/index.md
+      - 基礎篇:
+          - 01. Java 技術概論: java/basics/01-java-overview.md
+          - 02. 基本資料型態與流程控制: java/basics/02-data-types-operators.md
+          - 03. 文字、日期與數字物件: java/basics/03-string-date-number.md
+          - 08. 陣列與迴圈: java/basics/08-arrays-loops.md
+      - 物件導向:
+          - 04. 類別與物件: java/oop/04-class-and-object.md
+          - 05. 設計類別與列舉: java/oop/05-class-design-enum.md
+          - 06. 繼承與記錄: java/oop/06-inheritance-records.md
+          - 07. 介面與泛型: java/oop/07-interface-generics.md
+      - 進階主題:
+          - 09. 集合框架: java/advanced/09-collections.md
+          - 10. 巢狀類別與 Lambda: java/advanced/10-nested-class-lambda.md
+          - 11. Stream API: java/advanced/11-stream-api.md
+          - 12. 例外控制與除錯: java/advanced/12-exception-debug.md
+          - 13. 標記註解: java/advanced/13-annotations.md
+          - 15. 安全性: java/advanced/15-security.md
+          - 16. 進階泛型: java/advanced/16-advanced-generics.md
+      - 資料庫:
+          - 14. 資料庫應用開發: java/database/14-database-development.md
+      - 設計模式:
+          - 17. 設計模式與進階 IO: java/patterns/17-design-patterns-regex-io.md
+
+# Markdown 擴展功能
+markdown_extensions:
+  # Python Markdown
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - tables                  # 表格支援
+  - toc:
+      permalink: true
+      title: 本頁目錄       # 目錄標題
+      toc_depth: 3          # 目錄深度
+
+  # Python Markdown Extensions
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.mark
+  - pymdownx.tilde
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+      auto_title: true
+      linenums: true        # 顯示行號
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.smartsymbols
+  - pymdownx.snippets       # 程式碼片段
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+      combine_header_slug: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+      clickable_checkbox: true
+  - pymdownx.critic         # 批註標記
+  - pymdownx.magiclink      # 自動連結
+
+# 額外設定
+extra:
+  # 社交連結
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/caocharles  # 改成你的 GitHub
+      name: GitHub
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/in/caocharles  # 改成你的 LinkedIn (選用)
+      name: LinkedIn
+  
+  # 版權資訊
+  copyright: Copyright &copy; 2025 caocharles. All rights reserved.
+
+# 自訂 CSS (選用)
+extra_css:
+  - stylesheets/extra.css
+
+# 自訂 JavaScript (選用)
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js

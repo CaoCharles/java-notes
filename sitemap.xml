@@ -2,50 +2,66 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://caocharles.github.io/java-notes/</loc>
-         <lastmod>2025-11-11</lastmod>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://caocharles.github.io/java-notes/java/</loc>
-         <lastmod>2025-11-11</lastmod>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://caocharles.github.io/java-notes/java/advanced/09-collections/</loc>
-         <lastmod>2025-11-11</lastmod>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://caocharles.github.io/java-notes/java/advanced/10-nested-class-lambda/</loc>
-         <lastmod>2025-11-11</lastmod>
+         <lastmod>2025-11-12</lastmod>
+    </url>
+    <url>
+         <loc>https://caocharles.github.io/java-notes/java/advanced/11-stream-api/</loc>
+         <lastmod>2025-11-12</lastmod>
+    </url>
+    <url>
+         <loc>https://caocharles.github.io/java-notes/java/advanced/12-exception-debug/</loc>
+         <lastmod>2025-11-12</lastmod>
+    </url>
+    <url>
+         <loc>https://caocharles.github.io/java-notes/java/advanced/13-annotations/</loc>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://caocharles.github.io/java-notes/java/basics/01-java-overview/</loc>
-         <lastmod>2025-11-11</lastmod>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://caocharles.github.io/java-notes/java/basics/02-data-types-operators/</loc>
-         <lastmod>2025-11-11</lastmod>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://caocharles.github.io/java-notes/java/basics/03-string-date-number/</loc>
-         <lastmod>2025-11-11</lastmod>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://caocharles.github.io/java-notes/java/basics/08-arrays-loops/</loc>
-         <lastmod>2025-11-11</lastmod>
+         <lastmod>2025-11-12</lastmod>
+    </url>
+    <url>
+         <loc>https://caocharles.github.io/java-notes/java/database/14-database-development/</loc>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://caocharles.github.io/java-notes/java/oop/04-class-and-object/</loc>
-         <lastmod>2025-11-11</lastmod>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://caocharles.github.io/java-notes/java/oop/05-class-design-enum/</loc>
-         <lastmod>2025-11-11</lastmod>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://caocharles.github.io/java-notes/java/oop/06-inheritance-records/</loc>
-         <lastmod>2025-11-11</lastmod>
+         <lastmod>2025-11-12</lastmod>
     </url>
     <url>
          <loc>https://caocharles.github.io/java-notes/java/oop/07-interface-generics/</loc>
-         <lastmod>2025-11-11</lastmod>
+         <lastmod>2025-11-12</lastmod>
     </url>
 </urlset>

@@ -1,0 +1,953 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# 02 - LangChain Agents\n",
+    "\n",
+    "## 📚 學習目標\n",
+    "\n",
+    "- ✅ 理解 Agent 的核心概念和運作原理\n",
+    "- ✅ 掌握 create_react_agent 的使用方法\n",
+    "- ✅ 學習如何定義和整合 Tools\n",
+    "- ✅ 實作 ReAct (Reasoning + Acting) 模式\n",
+    "- ✅ 建立國泰人壽智能客服 Agent\n",
+    "\n",
+    "## ⏰ 預計時間: 50 分鐘"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## 📦 環境設定"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# 安裝必要套件\n",
+    "!pip install langchain==0.1.0\n",
+    "!pip install langchain-openai==0.0.5\n",
+    "!pip install langchain-community==0.0.16\n",
+    "!pip install python-dotenv==1.0.0"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from dotenv import load_dotenv\n",
+    "import os\n",
+    "\n",
+    "load_dotenv()\n",
+    "print(\"✅ 環境設定完成\")\n",
+    "print(f\"OpenAI API Key: {'已設定' if os.getenv('OPENAI_API_KEY') else '未設定'}\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Part 1: Agent 核心概念\n",
+    "\n",
+    "### 1.1 什麼是 Agent?\n",
+    "\n",
+    "**Agent** 是能夠自主決策並使用工具完成任務的 AI 系統。\n",
+    "\n",
+    "```\n",
+    "┌─────────────────────────────────────────┐\n",
+    "│         Agent 運作循環                   │\n",
+    "├─────────────────────────────────────────┤\n",
+    "│                                         │\n",
+    "│  1. 接收使用者輸入                       │\n",
+    "│         ↓                               │\n",
+    "│  2. 分析問題 (Reasoning)                │\n",
+    "│         ↓                               │\n",
+    "│  3. 選擇工具 (Tool Selection)           │\n",
+    "│         ↓                               │\n",
+    "│  4. 執行動作 (Action)                   │\n",
+    "│         ↓                               │\n",
+    "│  5. 觀察結果 (Observation)              │\n",
+    "│         ↓                               │\n",
+    "│  6. 重複 2-5 直到任務完成                │\n",
+    "│         ↓                               │\n",
+    "│  7. 返回最終答案                        │\n",
+    "│                                         │\n",
+    "└─────────────────────────────────────────┘\n",
+    "```\n",
+    "\n",
+    "### Chain vs Agent\n",
+    "\n",
+    "| 特性 | Chain | Agent |\n",
+    "|------|-------|-------|\n",
+    "| 流程 | 固定順序 | 動態決策 |\n",
+    "| 靈活性 | 低 | 高 |\n",
+    "| 工具使用 | 預設好的 | 自主選擇 |\n",
+    "| 適用場景 | 簡單流程 | 複雜任務 |\n",
+    "| 範例 | 翻譯流程 | 客服助理 |"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### 1.2 ReAct 模式\n",
+    "\n",
+    "**ReAct** = Reasoning (推理) + Acting (行動)\n",
+    "\n",
+    "Agent 會在每一步:\n",
+    "1. **Thought**: 思考下一步要做什麼\n",
+    "2. **Action**: 選擇要使用的工具\n",
+    "3. **Action Input**: 工具的輸入參數\n",
+    "4. **Observation**: 觀察工具執行結果\n",
+    "5. 重複直到得出 **Final Answer**"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# ReAct 範例執行過程\n",
+    "example_process = \"\"\"\n",
+    "Question: 查詢保單 CL202401001 的繳費狀況\n",
+    "\n",
+    "Thought: 我需要先查詢這個保單的基本資訊\n",
+    "Action: policy_lookup\n",
+    "Action Input: CL202401001\n",
+    "Observation: 保單類型=終身壽險, 投保人=王小明, 年繳保費=50000\n",
+    "\n",
+    "Thought: 現在我需要查詢繳費紀錄\n",
+    "Action: payment_history\n",
+    "Action Input: CL202401001\n",
+    "Observation: 2024-01 已繳, 2024-02 已繳, 2024-03 待繳\n",
+    "\n",
+    "Thought: 我已經有足夠資訊回答問題了\n",
+    "Final Answer: 保單 CL202401001 目前繳費狀況良好,1-2月已正常繳費,3月份保費待繳。\n",
+    "\"\"\"\n",
+    "\n",
+    "print(example_process)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Part 2: 定義 Tools\n",
+    "\n",
+    "### 2.1 什麼是 Tool?\n",
+    "\n",
+    "Tool 是 Agent 可以使用的功能,例如:\n",
+    "- 查詢資料庫\n",
+    "- 呼叫 API\n",
+    "- 執行計算\n",
+    "- 搜尋資訊"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### 2.2 使用 @tool 裝飾器定義工具"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from langchain.tools import tool\n",
+    "from typing import Dict\n",
+    "\n",
+    "@tool\n",
+    "def policy_lookup(policy_id: str) -> str:\n",
+    "    \"\"\"查詢保單基本資訊。\n",
+    "    \n",
+    "    Args:\n",
+    "        policy_id: 保單號碼\n",
+    "        \n",
+    "    Returns:\n",
+    "        包含保單類型、投保人、保費等資訊的字串\n",
+    "    \"\"\"\n",
+    "    # 模擬資料庫查詢\n",
+    "    mock_db = {\n",
+    "        \"CL202401001\": {\n",
+    "            \"type\": \"終身壽險\",\n",
+    "            \"owner\": \"王小明\",\n",
+    "            \"annual_premium\": 50000,\n",
+    "            \"status\": \"有效\"\n",
+    "        },\n",
+    "        \"CL202401002\": {\n",
+    "            \"type\": \"醫療險\",\n",
+    "            \"owner\": \"李小華\",\n",
+    "            \"annual_premium\": 30000,\n",
+    "            \"status\": \"有效\"\n",
+    "        }\n",
+    "    }\n",
+    "    \n",
+    "    if policy_id in mock_db:\n",
+    "        info = mock_db[policy_id]\n",
+    "        return f\"保單類型: {info['type']}, 投保人: {info['owner']}, 年繳保費: ${info['annual_premium']:,}, 狀態: {info['status']}\"\n",
+    "    else:\n",
+    "        return f\"找不到保單 {policy_id}\"\n",
+    "\n",
+    "@tool\n",
+    "def payment_history(policy_id: str) -> str:\n",
+    "    \"\"\"查詢保單繳費紀錄。\n",
+    "    \n",
+    "    Args:\n",
+    "        policy_id: 保單號碼\n",
+    "        \n",
+    "    Returns:\n",
+    "        繳費紀錄字串\n",
+    "    \"\"\"\n",
+    "    # 模擬繳費紀錄\n",
+    "    mock_payments = {\n",
+    "        \"CL202401001\": [\n",
+    "            {\"period\": \"2024-01\", \"status\": \"已繳\", \"amount\": 50000},\n",
+    "            {\"period\": \"2024-02\", \"status\": \"已繳\", \"amount\": 50000},\n",
+    "            {\"period\": \"2024-03\", \"status\": \"待繳\", \"amount\": 50000}\n",
+    "        ]\n",
+    "    }\n",
+    "    \n",
+    "    if policy_id in mock_payments:\n",
+    "        records = mock_payments[policy_id]\n",
+    "        result = []\n",
+    "        for r in records:\n",
+    "            result.append(f\"{r['period']}: {r['status']} (${r['amount']:,})\")\n",
+    "        return \"\\n\".join(result)\n",
+    "    else:\n",
+    "        return f\"找不到保單 {policy_id} 的繳費紀錄\"\n",
+    "\n",
+    "@tool\n",
+    "def premium_calculator(age: int, coverage: int) -> str:\n",
+    "    \"\"\"計算保費。\n",
+    "    \n",
+    "    Args:\n",
+    "        age: 投保年齡\n",
+    "        coverage: 保額\n",
+    "        \n",
+    "    Returns:\n",
+    "        試算的年繳保費\n",
+    "    \"\"\"\n",
+    "    # 簡單的保費計算公式 (實際會更複雜)\n",
+    "    base_rate = 0.02  # 基礎費率 2%\n",
+    "    age_factor = 1 + (age - 30) * 0.01  # 年齡係數\n",
+    "    annual_premium = int(coverage * base_rate * age_factor)\n",
+    "    \n",
+    "    return f\"年齡 {age} 歲,保額 ${coverage:,} 的年繳保費約為 ${annual_premium:,}\"\n",
+    "\n",
+    "# 測試工具\n",
+    "print(\"🔧 測試工具功能:\\n\")\n",
+    "print(\"1. 保單查詢:\")\n",
+    "print(policy_lookup.invoke({\"policy_id\": \"CL202401001\"}))\n",
+    "print(\"\\n2. 繳費紀錄:\")\n",
+    "print(payment_history.invoke({\"policy_id\": \"CL202401001\"}))\n",
+    "print(\"\\n3. 保費試算:\")\n",
+    "print(premium_calculator.invoke({\"age\": 35, \"coverage\": 2000000}))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### 2.3 使用 Tool 類別定義工具"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from langchain.tools import Tool\n",
+    "\n",
+    "def claim_status_check(claim_id: str) -> str:\n",
+    "    \"\"\"查詢理賠案件狀態\"\"\"\n",
+    "    mock_claims = {\n",
+    "        \"CLM20240101\": \"審核中 - 預計 3 個工作天完成\",\n",
+    "        \"CLM20240102\": \"已核准 - 理賠金額 $50,000 已於 2024-03-15 匯款\"\n",
+    "    }\n",
+    "    return mock_claims.get(claim_id, f\"找不到理賠案件 {claim_id}\")\n",
+    "\n",
+    "# 使用 Tool 類別包裝\n",
+    "claim_tool = Tool(\n",
+    "    name=\"claim_status\",\n",
+    "    func=claim_status_check,\n",
+    "    description=\"查詢理賠案件的處理狀態。輸入理賠編號,返回案件狀態。\"\n",
+    ")\n",
+    "\n",
+    "print(\"📋 理賠查詢:\")\n",
+    "print(claim_tool.run(\"CLM20240102\"))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Part 3: 建立 ReAct Agent\n",
+    "\n",
+    "### 3.1 使用 create_react_agent"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from langchain.agents import create_react_agent, AgentExecutor\n",
+    "from langchain_openai import ChatOpenAI\n",
+    "from langchain import hub\n",
+    "\n",
+    "# 初始化 LLM\n",
+    "llm = ChatOpenAI(model=\"gpt-4\", temperature=0)\n",
+    "\n",
+    "# 準備工具列表\n",
+    "tools = [\n",
+    "    policy_lookup,\n",
+    "    payment_history,\n",
+    "    premium_calculator,\n",
+    "    claim_tool\n",
+    "]\n",
+    "\n",
+    "# 載入 ReAct Prompt (LangChain Hub)\n",
+    "prompt = hub.pull(\"hwchase17/react\")\n",
+    "\n",
+    "# 建立 Agent\n",
+    "agent = create_react_agent(llm, tools, prompt)\n",
+    "\n",
+    "# 建立 Agent Executor\n",
+    "agent_executor = AgentExecutor(\n",
+    "    agent=agent,\n",
+    "    tools=tools,\n",
+    "    verbose=True,  # 顯示執行過程\n",
+    "    handle_parsing_errors=True,  # 處理解析錯誤\n",
+    "    max_iterations=5  # 最大迭代次數\n",
+    ")\n",
+    "\n",
+    "print(\"✅ ReAct Agent 建立完成\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### 3.2 執行 Agent - 簡單查詢"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# 測試 1: 保單查詢\n",
+    "result = agent_executor.invoke({\n",
+    "    \"input\": \"請查詢保單 CL202401001 的基本資訊\"\n",
+    "})\n",
+    "\n",
+    "print(\"\\n\" + \"=\"*60)\n",
+    "print(\"🤖 Agent 回答:\")\n",
+    "print(\"=\"*60)\n",
+    "print(result[\"output\"])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### 3.3 執行 Agent - 多步驟推理"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# 測試 2: 需要多個工具的查詢\n",
+    "result = agent_executor.invoke({\n",
+    "    \"input\": \"請幫我查詢保單 CL202401001 的繳費狀況,並告訴我下次該繳多少錢\"\n",
+    "})\n",
+    "\n",
+    "print(\"\\n\" + \"=\"*60)\n",
+    "print(\"🤖 Agent 回答:\")\n",
+    "print(\"=\"*60)\n",
+    "print(result[\"output\"])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### 3.4 執行 Agent - 保費試算"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# 測試 3: 保費計算\n",
+    "result = agent_executor.invoke({\n",
+    "    \"input\": \"我今年 40 歲,想要投保 300 萬的壽險,請幫我試算年繳保費\"\n",
+    "})\n",
+    "\n",
+    "print(\"\\n\" + \"=\"*60)\n",
+    "print(\"🤖 Agent 回答:\")\n",
+    "print(\"=\"*60)\n",
+    "print(result[\"output\"])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Part 4: 自訂 ReAct Prompt\n",
+    "\n",
+    "### 4.1 客製化 Prompt 模板"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from langchain.prompts import PromptTemplate\n",
+    "\n",
+    "# 建立國泰人壽專用的 ReAct Prompt\n",
+    "cathay_prompt = PromptTemplate.from_template(\"\"\"\n",
+    "你是國泰人壽的專業客服 AI 助理,名叫「小泰」。\n",
+    "\n",
+    "你的任務是協助客戶查詢保單、理賠、繳費等相關資訊。\n",
+    "請用專業、親切、有同理心的態度回答問題。\n",
+    "\n",
+    "你可以使用以下工具:\n",
+    "\n",
+    "{tools}\n",
+    "\n",
+    "使用以下格式:\n",
+    "\n",
+    "Question: 客戶的問題\n",
+    "Thought: 你應該思考要做什麼\n",
+    "Action: 要使用的工具,應該是 [{tool_names}] 其中之一\n",
+    "Action Input: 工具的輸入\n",
+    "Observation: 工具執行的結果\n",
+    "... (這個 Thought/Action/Action Input/Observation 可以重複 N 次)\n",
+    "Thought: 我現在知道最終答案了\n",
+    "Final Answer: 給客戶的最終回答\n",
+    "\n",
+    "重要提醒:\n",
+    "1. 回答時請使用繁體中文\n",
+    "2. 保持專業但親切的口吻\n",
+    "3. 如果資訊不足,主動詢問客戶\n",
+    "4. 每次回答結束時,詢問客戶是否還有其他問題\n",
+    "\n",
+    "開始!\n",
+    "\n",
+    "Question: {input}\n",
+    "Thought: {agent_scratchpad}\n",
+    "\"\"\")\n",
+    "\n",
+    "# 建立使用自訂 Prompt 的 Agent\n",
+    "custom_agent = create_react_agent(llm, tools, cathay_prompt)\n",
+    "\n",
+    "custom_agent_executor = AgentExecutor(\n",
+    "    agent=custom_agent,\n",
+    "    tools=tools,\n",
+    "    verbose=True,\n",
+    "    handle_parsing_errors=True\n",
+    ")\n",
+    "\n",
+    "print(\"✅ 自訂 Agent 建立完成\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### 4.2 測試自訂 Agent"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "result = custom_agent_executor.invoke({\n",
+    "    \"input\": \"你好!我想了解一下我的保單 CL202401001 目前的狀況\"\n",
+    "})\n",
+    "\n",
+    "print(\"\\n\" + \"=\"*60)\n",
+    "print(\"🤖 小泰的回答:\")\n",
+    "print(\"=\"*60)\n",
+    "print(result[\"output\"])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Part 5: Agent 進階技巧\n",
+    "\n",
+    "### 5.1 加入執行回調 (Callbacks)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from langchain.callbacks import StdOutCallbackHandler\n",
+    "\n",
+    "# 建立回調處理器\n",
+    "callback = StdOutCallbackHandler()\n",
+    "\n",
+    "# 執行時傳入 callbacks\n",
+    "result = agent_executor.invoke(\n",
+    "    {\"input\": \"查詢理賠案件 CLM20240102 的狀態\"},\n",
+    "    {\"callbacks\": [callback]}\n",
+    ")\n",
+    "\n",
+    "print(\"\\n📊 執行結果:\")\n",
+    "print(result[\"output\"])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### 5.2 串流輸出 (Streaming)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# 使用 stream 方法取得即時輸出\n",
+    "print(\"🔄 串流執行中...\\n\")\n",
+    "\n",
+    "for chunk in agent_executor.stream(\n",
+    "    {\"input\": \"45 歲投保 500 萬壽險的年繳保費是多少?\"}\n",
+    "):\n",
+    "    if \"output\" in chunk:\n",
+    "        print(chunk[\"output\"])\n",
+    "    elif \"actions\" in chunk:\n",
+    "        for action in chunk[\"actions\"]:\n",
+    "            print(f\"\\n🔧 使用工具: {action.tool}\")\n",
+    "            print(f\"📥 輸入: {action.tool_input}\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### 5.3 錯誤處理"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# 測試錯誤處理\n",
+    "try:\n",
+    "    result = agent_executor.invoke({\n",
+    "        \"input\": \"查詢不存在的保單 INVALID123\"\n",
+    "    })\n",
+    "    print(\"\\n🤖 Agent 回答:\")\n",
+    "    print(result[\"output\"])\n",
+    "except Exception as e:\n",
+    "    print(f\"❌ 執行錯誤: {e}\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Part 6: 實戰案例 - 完整的客服 Agent\n",
+    "\n",
+    "### 6.1 擴充更多工具"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "@tool\n",
+    "def product_recommendation(age: int, budget: int, needs: str) -> str:\n",
+    "    \"\"\"根據客戶需求推薦保險商品。\n",
+    "    \n",
+    "    Args:\n",
+    "        age: 客戶年齡\n",
+    "        budget: 年度預算\n",
+    "        needs: 需求描述 (例如: 醫療保障、退休規劃、子女教育)\n",
+    "    \"\"\"\n",
+    "    recommendations = {\n",
+    "        \"醫療\": \"國泰醫療保險 - 提供住院、手術、門診等完整保障\",\n",
+    "        \"退休\": \"國泰利率變動型年金 - 穩健累積退休金\",\n",
+    "        \"教育\": \"國泰美滿人生 - 子女教育金專案\",\n",
+    "        \"壽險\": \"國泰終身壽險 - 終身保障,資產傳承\"\n",
+    "    }\n",
+    "    \n",
+    "    result = []\n",
+    "    for key, product in recommendations.items():\n",
+    "        if key in needs:\n",
+    "            result.append(f\"• {product}\")\n",
+    "    \n",
+    "    if result:\n",
+    "        return f\"根據您 {age} 歲,年度預算 ${budget:,},需求為『{needs}』,推薦:\\n\" + \"\\n\".join(result)\n",
+    "    else:\n",
+    "        return f\"根據您的需求『{needs}』,建議先與專業顧問詳談,了解更多選項。\"\n",
+    "\n",
+    "@tool  \n",
+    "def appointment_booking(name: str, phone: str, preferred_time: str) -> str:\n",
+    "    \"\"\"預約與理財顧問諮詢。\n",
+    "    \n",
+    "    Args:\n",
+    "        name: 客戶姓名\n",
+    "        phone: 聯絡電話\n",
+    "        preferred_time: 希望時段\n",
+    "    \"\"\"\n",
+    "    return f\"已為 {name} 先生/小姐預約 {preferred_time} 的諮詢時段,我們會盡快致電 {phone} 確認。\"\n",
+    "\n",
+    "@tool\n",
+    "def faq_search(question: str) -> str:\n",
+    "    \"\"\"搜尋常見問題。\n",
+    "    \n",
+    "    Args:\n",
+    "        question: 問題關鍵字\n",
+    "    \"\"\"\n",
+    "    faqs = {\n",
+    "        \"理賠\": \"理賠申請需準備: 1.理賠申請書 2.醫療單據 3.診斷證明 4.保單影本。一般 5-7 個工作天完成審核。\",\n",
+    "        \"解約\": \"保單解約需攜帶: 1.身分證 2.保單正本 3.存摺影本。可至各分公司辦理或線上申請。\",\n",
+    "        \"變更\": \"保單變更 (受益人、地址、電話) 可透過: 1.臨櫃辦理 2.客服專線 3.行動 APP 4.官網會員專區。\"\n",
+    "    }\n",
+    "    \n",
+    "    for key, answer in faqs.items():\n",
+    "        if key in question:\n",
+    "            return answer\n",
+    "    \n",
+    "    return \"找不到相關的常見問題,建議致電客服專線 0800-036-599 詢問。\"\n",
+    "\n",
+    "print(\"✅ 新增 3 個進階工具\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### 6.2 建立完整的客服 Agent"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# 完整工具列表\n",
+    "full_tools = [\n",
+    "    policy_lookup,\n",
+    "    payment_history,\n",
+    "    premium_calculator,\n",
+    "    claim_tool,\n",
+    "    product_recommendation,\n",
+    "    appointment_booking,\n",
+    "    faq_search\n",
+    "]\n",
+    "\n",
+    "# 建立完整客服 Agent\n",
+    "customer_service_agent = create_react_agent(llm, full_tools, cathay_prompt)\n",
+    "\n",
+    "cs_executor = AgentExecutor(\n",
+    "    agent=customer_service_agent,\n",
+    "    tools=full_tools,\n",
+    "    verbose=True,\n",
+    "    handle_parsing_errors=True,\n",
+    "    max_iterations=10\n",
+    ")\n",
+    "\n",
+    "print(\"✅ 國泰人壽智能客服 Agent 準備就緒\")\n",
+    "print(f\"📋 可用工具數量: {len(full_tools)}\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### 6.3 測試完整客服場景"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# 場景 1: 產品諮詢\n",
+    "print(\"=\"*60)\n",
+    "print(\"📞 客戶諮詢 1: 產品推薦\")\n",
+    "print(\"=\"*60)\n",
+    "\n",
+    "result = cs_executor.invoke({\n",
+    "    \"input\": \"我今年 35 歲,年收入約 100 萬,想要規劃醫療保障和退休金,預算一年 10 萬,有什麼建議嗎?\"\n",
+    "})\n",
+    "\n",
+    "print(\"\\n🤖 小泰:\")\n",
+    "print(result[\"output\"])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# 場景 2: 保單查詢 + FAQ\n",
+    "print(\"\\n\" + \"=\"*60)\n",
+    "print(\"📞 客戶諮詢 2: 保單查詢與變更\")\n",
+    "print(\"=\"*60)\n",
+    "\n",
+    "result = cs_executor.invoke({\n",
+    "    \"input\": \"我的保單是 CL202401001,想查一下繳費狀況,另外想問如何變更受益人?\"\n",
+    "})\n",
+    "\n",
+    "print(\"\\n🤖 小泰:\")\n",
+    "print(result[\"output\"])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# 場景 3: 理賠查詢 + 預約\n",
+    "print(\"\\n\" + \"=\"*60)\n",
+    "print(\"📞 客戶諮詢 3: 理賠與預約\")\n",
+    "print(\"=\"*60)\n",
+    "\n",
+    "result = cs_executor.invoke({\n",
+    "    \"input\": \"請幫我查理賠案件 CLM20240101 的進度,如果有問題我想預約顧問諮詢,我是陳大明,電話 0912-345-678,下週三下午方便\"\n",
+    "})\n",
+    "\n",
+    "print(\"\\n🤖 小泰:\")\n",
+    "print(result[\"output\"])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## 🎯 練習題\n",
+    "\n",
+    "### 練習 1: 建立保單健檢工具\n",
+    "\n",
+    "**需求**:\n",
+    "1. 定義 `policy_health_check` 工具\n",
+    "2. 輸入保單號碼,輸出健檢報告\n",
+    "3. 檢查項目: 繳費狀況、保障是否足夠、是否有更好的方案\n",
+    "4. 整合到 Agent 中測試"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# TODO: 實作保單健檢工具\n",
+    "\n",
+    "@tool\n",
+    "def policy_health_check(policy_id: str) -> str:\n",
+    "    \"\"\"執行保單健檢。\"\"\"\n",
+    "    # TODO: 實作健檢邏輯\n",
+    "    pass"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### 練習 2: 多語言客服 Agent\n",
+    "\n",
+    "**需求**:\n",
+    "1. 修改 Prompt 讓 Agent 支援中英文\n",
+    "2. 根據客戶使用的語言自動切換\n",
+    "3. 測試中英文查詢"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# TODO: 建立多語言 Prompt\n",
+    "# TODO: 測試中英文互動"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### 練習 3: 對話紀錄與分析\n",
+    "\n",
+    "**需求**:\n",
+    "1. 建立工具記錄每次對話\n",
+    "2. 建立工具分析客戶意圖 (查詢/投訴/購買)\n",
+    "3. 建立工具產生客服報表"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# TODO: 實作對話紀錄系統"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## ✅ 練習解答\n",
+    "\n",
+    "### 練習 1 解答: 保單健檢工具"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "@tool\n",
+    "def policy_health_check_solution(policy_id: str) -> str:\n",
+    "    \"\"\"執行保單健檢,分析保障缺口和優化建議。\n",
+    "    \n",
+    "    Args:\n",
+    "        policy_id: 保單號碼\n",
+    "    \"\"\"\n",
+    "    # 取得保單資訊 (實際會呼叫其他工具)\n",
+    "    policy_info = policy_lookup.invoke({\"policy_id\": policy_id})\n",
+    "    payment_info = payment_history.invoke({\"policy_id\": policy_id})\n",
+    "    \n",
+    "    # 模擬健檢分析\n",
+    "    report = f\"\"\"\n",
+    "📊 保單健檢報告 - {policy_id}\n",
+    "{'='*50}\n",
+    "\n",
+    "✅ 保單狀態:\n",
+    "{policy_info}\n",
+    "\n",
+    "💰 繳費狀況:\n",
+    "{payment_info}\n",
+    "\n",
+    "📈 健檢結果:\n",
+    "1. 繳費狀況: 良好 ✅\n",
+    "2. 保障充足度: 中等 ⚠️\n",
+    "3. 費用合理性: 合理 ✅\n",
+    "\n",
+    "💡 優化建議:\n",
+    "• 建議增加醫療險保障,現有保單偏重壽險\n",
+    "• 可考慮附加重大疾病險\n",
+    "• 保費水準合理,符合您的年齡區間\n",
+    "\n",
+    "📞 如需詳細規劃,歡迎預約理財顧問諮詢。\n",
+    "\"\"\"\n",
+    "    \n",
+    "    return report\n",
+    "\n",
+    "# 測試\n",
+    "result = policy_health_check_solution.invoke({\"policy_id\": \"CL202401001\"})\n",
+    "print(result)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## 📝 學習檢查清單\n",
+    "\n",
+    "完成本 Notebook 後,你應該能夠:\n",
+    "\n",
+    "- [ ] 理解 Agent 的核心概念和運作循環\n",
+    "- [ ] 區分 Chain 和 Agent 的差異\n",
+    "- [ ] 理解 ReAct 模式 (Reasoning + Acting)\n",
+    "- [ ] 使用 @tool 裝飾器定義工具\n",
+    "- [ ] 使用 Tool 類別封裝函數\n",
+    "- [ ] 使用 create_react_agent 建立 Agent\n",
+    "- [ ] 使用 AgentExecutor 執行 Agent\n",
+    "- [ ] 自訂 ReAct Prompt 模板\n",
+    "- [ ] 處理 Agent 執行錯誤\n",
+    "- [ ] 整合多個工具建立實用的客服系統\n",
+    "\n",
+    "## 🎓 重點回顧\n",
+    "\n",
+    "### Agent 核心組件\n",
+    "1. **LLM**: 負責推理和決策\n",
+    "2. **Tools**: Agent 可使用的功能\n",
+    "3. **Prompt**: 指導 Agent 行為的模板\n",
+    "4. **Agent Executor**: 執行 Agent 並管理循環\n",
+    "\n",
+    "### ReAct 執行流程\n",
+    "```\n",
+    "Question → Thought → Action → Observation → ... → Final Answer\n",
+    "```\n",
+    "\n",
+    "### 最佳實踐\n",
+    "1. 為每個工具撰寫清楚的 docstring\n",
+    "2. 設定合理的 max_iterations 避免無限循環\n",
+    "3. 啟用 handle_parsing_errors 處理解析錯誤\n",
+    "4. 使用 verbose=True 除錯時查看執行過程\n",
+    "5. 自訂 Prompt 以符合特定領域需求\n",
+    "\n",
+    "### 下一步\n",
+    "繼續前往 `03-structured-output.ipynb` 學習結構化輸出 👉"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",\n",
+   "language": "python",\n",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.11.0"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 4
+}

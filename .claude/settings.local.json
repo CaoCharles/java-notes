@@ -2,7 +2,14 @@
   "permissions": {
     "allow": [
       "Bash(python:*)",
-      "Bash(source:*)"
+      "Bash(source:*)",
+      "Bash(tree:*)",
+      "Bash(mkdir:*)",
+      "Bash(cat:*)",
+      "Bash(python3:*)",
+      "Bash(/tmp/notebook_backup.ipynb)",
+      "Bash(sed:*)",
+      "Bash(/tmp/notebook_fixed.ipynb)"
     ],
     "deny": [],
     "ask": []

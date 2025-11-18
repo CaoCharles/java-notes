@@ -87,10 +87,30 @@ plugins:
         - en        # 英文
   
   # Gemini Chatbot
-  - gemini-chatbot:
-      model: "gemini-2.5-flash"
-      chat_title: "學習小幫手"
-      initial_prompt: "我是AI助理,有什麼想問的～"
+  # - gemini-chatbot:
+  #     model: "gemini-2.5-flash"
+  #     chat_title: "學習小幫手"
+  #     initial_prompt: "我是AI助理,有什麼想問的～"
+
+  - git-revision-date-localized:
+      enable_creation_date: true    # 顯示創建日期
+      type: datetime                # 顯示格式
+      # 可選: date, datetime, iso_date, iso_datetime, timeago
+      timezone: Asia/Taipei         # 時區
+      locale: zh_TW                 # 語言(繁體中文)
+      fallback_to_build_date: false # 找不到 Git 日期時使用建置日期
+      exclude:                      # 排除特定頁面
+        - index.md
+
+  - mkdocs-jupyter:
+      include_source: True          # 顯示原始碼
+      ignore_h1_titles: True        # 忽略 notebook 中的 H1 標題
+      execute: False                # 是否執行 notebook (建議 False)
+      allow_errors: false           # 是否允許錯誤
+      kernel_name: python3          # 使用的 kernel
+      show_input: True              # 顯示輸入儲存格
+      no_input: False               # 隱藏所有輸入
+      theme: light                  # light 或 dark
 
 # 導航結構 (頂部會出現 Home, Getting Started, Java 學習三個標籤)
 nav:
@@ -126,6 +146,41 @@ nav:
           - 14. 資料庫應用開發: java/database/14-database-development.md
       - 設計模式:
           - 17. 設計模式與進階 IO: java/patterns/17-design-patterns-regex-io.md
+
+  - LangGraph Tutorial:
+      - 學習路徑: langgraph/index.md
+      - 基礎篇:
+          - 01. LangGraph 基礎概念: langgraph/basics/01-langgraph-intro.md
+          - 02. 核心組件介紹: langgraph/basics/02-core-components.md
+          - 03. 與 LangChain 的關係: langgraph/basics/03-langchain-relation.md
+      - 架構設計:
+          - 04. Agent 工作原理: langgraph/architecture/04-agent-principles.md
+          - 05. State Graph 設計模式: langgraph/architecture/05-state-graph.md
+          - 06. 條件邊使用: langgraph/architecture/06-conditional-edges.md
+      - 實作範例:
+          - 07. 建立第一個 Agent: langgraph/implementation/07-first-agent.md
+          - 08. 多步驟推理 Agent: langgraph/implementation/08-multi-step-reasoning.md
+          - 09. 工具調用整合: langgraph/implementation/09-tool-calling.md
+      - 進階應用:
+          - 10. Human-in-the-Loop: langgraph/advanced/10-human-in-loop.md
+          - 11. 錯誤處理與重試: langgraph/advanced/11-error-handling.md
+          - 12. 效能優化: langgraph/advanced/12-performance-optimization.md
+      - 實作練習 (Notebooks):
+          - 練習 01 - 基礎 Agent: langgraph/notebooks/01-basic-agent.ipynb
+          - 練習 02 - State 管理: langgraph/notebooks/02-state-management.ipynb
+          - 練習 03 - 條件邊: langgraph/notebooks/03-conditional-edges.ipynb
+          - 練習 04 - 工具整合: langgraph/notebooks/04-tool-integration.ipynb
+          - 練習 05 - Human-in-Loop: langgraph/notebooks/05-human-in-loop.ipynb
+          - 練習 06 - 進階模式: langgraph/notebooks/06-advanced-patterns.ipynb
+
+  - LangChain Tutorial:
+      - 實作練習 (Notebooks):
+          - 練習 01 - LangChain 基礎: langchain/notebooks/01-langchain-basics.ipynb
+          - 練習 02 - LangChain Agents: langchain/notebooks/02-langchain-agents.ipynb
+          - 練習 03 - 結構化輸出: langchain/notebooks/03-structured-output.ipynb
+          - 練習 04 - 記憶管理: langchain/notebooks/04-memory-management.ipynb
+          - 練習 05 - 進階中介層: langchain/notebooks/05-middleware-advanced.ipynb
+          - 練習 06 - 部署實務: langchain/notebooks/06-langchain-deployment.ipynb
 
 # Markdown 擴展功能
 markdown_extensions:

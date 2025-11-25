@@ -2,162 +2,258 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://caocharles.github.io/java-notes/</loc>
-         <lastmod>2025-11-18</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://caocharles.github.io/java-notes/java/</loc>
-         <lastmod>2025-11-18</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://caocharles.github.io/java-notes/java/advanced/09-collections/</loc>
-         <lastmod>2025-11-18</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://caocharles.github.io/java-notes/java/advanced/10-nested-class-lambda/</loc>
-         <lastmod>2025-11-18</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://caocharles.github.io/java-notes/java/basics/01-java-overview/</loc>
-         <lastmod>2025-11-18</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://caocharles.github.io/java-notes/java/basics/02-data-types-operators/</loc>
-         <lastmod>2025-11-18</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://caocharles.github.io/java-notes/java/basics/03-string-date-number/</loc>
-         <lastmod>2025-11-18</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://caocharles.github.io/java-notes/java/basics/08-arrays-loops/</loc>
-         <lastmod>2025-11-18</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://caocharles.github.io/java-notes/java/oop/04-class-and-object/</loc>
-         <lastmod>2025-11-18</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://caocharles.github.io/java-notes/java/oop/05-class-design-enum/</loc>
-         <lastmod>2025-11-18</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://caocharles.github.io/java-notes/java/oop/06-inheritance-records/</loc>
-         <lastmod>2025-11-18</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://caocharles.github.io/java-notes/java/oop/07-interface-generics/</loc>
-         <lastmod>2025-11-18</lastmod>
+         <lastmod>2025-11-25</lastmod>
+    </url>
+    <url>
+         <loc>https://caocharles.github.io/java-notes/java-class/</loc>
+         <lastmod>2025-11-25</lastmod>
+    </url>
+    <url>
+         <loc>https://caocharles.github.io/java-notes/java-class/appendix-a/</loc>
+         <lastmod>2025-11-25</lastmod>
+    </url>
+    <url>
+         <loc>https://caocharles.github.io/java-notes/java-class/appendix-b/</loc>
+         <lastmod>2025-11-25</lastmod>
+    </url>
+    <url>
+         <loc>https://caocharles.github.io/java-notes/java-class/appendix-c/</loc>
+         <lastmod>2025-11-25</lastmod>
+    </url>
+    <url>
+         <loc>https://caocharles.github.io/java-notes/java-class/appendix-d/</loc>
+         <lastmod>2025-11-25</lastmod>
+    </url>
+    <url>
+         <loc>https://caocharles.github.io/java-notes/java-class/appendix-e/</loc>
+         <lastmod>2025-11-25</lastmod>
+    </url>
+    <url>
+         <loc>https://caocharles.github.io/java-notes/java-class/appendix-f/</loc>
+         <lastmod>2025-11-25</lastmod>
+    </url>
+    <url>
+         <loc>https://caocharles.github.io/java-notes/java-class/d1-class/</loc>
+         <lastmod>2025-11-25</lastmod>
+    </url>
+    <url>
+         <loc>https://caocharles.github.io/java-notes/java-class/d2-basics/</loc>
+         <lastmod>2025-11-25</lastmod>
+    </url>
+    <url>
+         <loc>https://caocharles.github.io/java-notes/java-class/module-01/</loc>
+         <lastmod>2025-11-25</lastmod>
+    </url>
+    <url>
+         <loc>https://caocharles.github.io/java-notes/java-class/module-02/</loc>
+         <lastmod>2025-11-25</lastmod>
+    </url>
+    <url>
+         <loc>https://caocharles.github.io/java-notes/java-class/module-03/</loc>
+         <lastmod>2025-11-25</lastmod>
+    </url>
+    <url>
+         <loc>https://caocharles.github.io/java-notes/java-class/module-04/</loc>
+         <lastmod>2025-11-25</lastmod>
+    </url>
+    <url>
+         <loc>https://caocharles.github.io/java-notes/java-class/module-05/</loc>
+         <lastmod>2025-11-25</lastmod>
+    </url>
+    <url>
+         <loc>https://caocharles.github.io/java-notes/java-class/module-06/</loc>
+         <lastmod>2025-11-25</lastmod>
+    </url>
+    <url>
+         <loc>https://caocharles.github.io/java-notes/java-class/module-07/</loc>
+         <lastmod>2025-11-25</lastmod>
+    </url>
+    <url>
+         <loc>https://caocharles.github.io/java-notes/java-class/module-08/</loc>
+         <lastmod>2025-11-25</lastmod>
+    </url>
+    <url>
+         <loc>https://caocharles.github.io/java-notes/java-class/module-09/</loc>
+         <lastmod>2025-11-25</lastmod>
+    </url>
+    <url>
+         <loc>https://caocharles.github.io/java-notes/java-class/module-10/</loc>
+         <lastmod>2025-11-25</lastmod>
+    </url>
+    <url>
+         <loc>https://caocharles.github.io/java-notes/java-class/module-11/</loc>
+         <lastmod>2025-11-25</lastmod>
+    </url>
+    <url>
+         <loc>https://caocharles.github.io/java-notes/java-class/module-12/</loc>
+         <lastmod>2025-11-25</lastmod>
+    </url>
+    <url>
+         <loc>https://caocharles.github.io/java-notes/java-class/module-13/</loc>
+         <lastmod>2025-11-25</lastmod>
+    </url>
+    <url>
+         <loc>https://caocharles.github.io/java-notes/java-class/module-14/</loc>
+         <lastmod>2025-11-25</lastmod>
+    </url>
+    <url>
+         <loc>https://caocharles.github.io/java-notes/java-class/module-15/</loc>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://caocharles.github.io/java-notes/langchain/notebooks/01-langchain-basics/</loc>
-         <lastmod>2025-11-18</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://caocharles.github.io/java-notes/langchain/notebooks/02-langchain-agents/</loc>
-         <lastmod>2025-11-18</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://caocharles.github.io/java-notes/langchain/notebooks/03-structured-output/</loc>
-         <lastmod>2025-11-18</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://caocharles.github.io/java-notes/langchain/notebooks/04-memory-management/</loc>
-         <lastmod>2025-11-18</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://caocharles.github.io/java-notes/langchain/notebooks/05-middleware-advanced/</loc>
-         <lastmod>2025-11-18</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://caocharles.github.io/java-notes/langchain/notebooks/06-langchain-deployment/</loc>
-         <lastmod>2025-11-18</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://caocharles.github.io/java-notes/langgraph/</loc>
-         <lastmod>2025-11-18</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://caocharles.github.io/java-notes/langgraph/advanced/10-human-in-loop/</loc>
-         <lastmod>2025-11-18</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://caocharles.github.io/java-notes/langgraph/advanced/11-error-handling/</loc>
-         <lastmod>2025-11-18</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://caocharles.github.io/java-notes/langgraph/advanced/12-performance-optimization/</loc>
-         <lastmod>2025-11-18</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://caocharles.github.io/java-notes/langgraph/architecture/04-agent-principles/</loc>
-         <lastmod>2025-11-18</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://caocharles.github.io/java-notes/langgraph/architecture/05-state-graph/</loc>
-         <lastmod>2025-11-18</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://caocharles.github.io/java-notes/langgraph/architecture/06-conditional-edges/</loc>
-         <lastmod>2025-11-18</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://caocharles.github.io/java-notes/langgraph/basics/01-langgraph-intro/</loc>
-         <lastmod>2025-11-18</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://caocharles.github.io/java-notes/langgraph/basics/02-core-components/</loc>
-         <lastmod>2025-11-18</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://caocharles.github.io/java-notes/langgraph/basics/03-langchain-relation/</loc>
-         <lastmod>2025-11-18</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://caocharles.github.io/java-notes/langgraph/implementation/07-first-agent/</loc>
-         <lastmod>2025-11-18</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://caocharles.github.io/java-notes/langgraph/implementation/08-multi-step-reasoning/</loc>
-         <lastmod>2025-11-18</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://caocharles.github.io/java-notes/langgraph/implementation/09-tool-calling/</loc>
-         <lastmod>2025-11-18</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://caocharles.github.io/java-notes/langgraph/notebooks/01-basic-agent/</loc>
-         <lastmod>2025-11-18</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://caocharles.github.io/java-notes/langgraph/notebooks/02-state-management/</loc>
-         <lastmod>2025-11-18</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://caocharles.github.io/java-notes/langgraph/notebooks/03-conditional-edges/</loc>
-         <lastmod>2025-11-18</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://caocharles.github.io/java-notes/langgraph/notebooks/04-tool-integration/</loc>
-         <lastmod>2025-11-18</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://caocharles.github.io/java-notes/langgraph/notebooks/05-human-in-loop/</loc>
-         <lastmod>2025-11-18</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://caocharles.github.io/java-notes/langgraph/notebooks/06-advanced-patterns/</loc>
-         <lastmod>2025-11-18</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://caocharles.github.io/java-notes/react-pattern/</loc>
-         <lastmod>2025-11-18</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://caocharles.github.io/java-notes/react-pattern/01-react-intro/</loc>
-         <lastmod>2025-11-18</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
     <url>
          <loc>https://caocharles.github.io/java-notes/react-pattern/02-react-components/</loc>
-         <lastmod>2025-11-18</lastmod>
+         <lastmod>2025-11-25</lastmod>
     </url>
 </urlset>

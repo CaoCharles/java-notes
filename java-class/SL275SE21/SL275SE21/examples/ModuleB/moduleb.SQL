@@ -1,0 +1,34 @@
+DROP DATABASE IF EXISTS EmployeeDB;
+
+CREATE DATABASE EmployeeDB;
+
+USE EmployeeDB;
+
+DROP TABLE IF EXISTS Emp;
+
+CREATE TABLE Emp (
+    ID INT PRIMARY KEY,
+    FirstName VARCHAR(32),
+    LastName VARCHAR(32),
+    BirthDate DATE,
+    Salary DECIMAL(8, 2),
+    Dept VARCHAR(32)
+);
+
+INSERT INTO Emp VALUES (101, 'Abhijit','Gopali','1956-06-01',70000.00,"ADMIN");
+INSERT INTO Emp VALUES (110, 'Troy','Hammer','1965-03-31',102109.15,"HR");
+INSERT INTO Emp VALUES (123, 'Michael','Walton','1986-08-25',93400.20,"ENG");
+INSERT INTO Emp VALUES (201, 'Thomas','Fitzpatrick','1961-09-22',75123.45,"ENG");
+INSERT INTO Emp VALUES (388, 'Monica','Rose','1976-08-13',65000.00,"HR");
+INSERT INTO Emp VALUES (500, 'Jill','Murray','1950-09-21',150000.00,"SALES");
+INSERT INTO Emp VALUES (512, 'Simon','Johnson','1968-11-20',52000.00,"SALES");
+INSERT INTO Emp VALUES (999, 'Code','Data','2013-07-01',98200.00,"SALES");
+
+DELIMITER $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `empsalarycount`(IN min INT, IN max INT, OUT amount INT)
+BEGIN
+  SELECT COUNT(*) INTO amount
+  FROM Emp
+  WHERE salary BETWEEN min AND max;
+END
